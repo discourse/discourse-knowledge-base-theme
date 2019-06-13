@@ -1,0 +1,11 @@
+kb_categories:
+  type: list
+  default: ""
+  description:
+    en: A list of categories where the Knowledge Base UI should appear. Defaults to off. 
+sort_tags:
+  type: enum
+  default: alphabetical
+  choices:
+    - alphabetical
+    - popularity 

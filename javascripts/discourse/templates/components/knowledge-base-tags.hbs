@@ -1,0 +1,11 @@
+<h3><a href="/c/{{category.slug}}">#{{category.name}} Knowledge Base</a></h3>
+
+{{#each tags as |tag|}}
+    {{knowledge-base-tag tag=tag category=category activeTagSelection=activeTagSelection filteredList=filteredList}}
+{{/each}}
+
+{{#if subtags}}
+   {{#each subtags as |tag|}}
+     {{knowledge-base-tag tag=tag category=category activeTagSelection=activeTagSelection filteredList=filteredList subtag=true}}
+   {{/each}}
+{{/if}}

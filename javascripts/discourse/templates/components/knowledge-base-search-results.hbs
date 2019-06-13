@@ -1,0 +1,25 @@
+<h2>KB Search Results</h2>
+{{#if empty}}
+  {{i18n 'search.no_results'}}
+{{else}}
+  <table class="topic-list">
+    <thead>
+      <th>Topic</th>
+      <th>Tags</th>
+    </thead>
+    <tbody>
+      {{#each filteredList as |item|}}
+        <tr>
+          <td class="main-link">
+            <a href="/t/{{item.id}}">{{item.title}}</a>
+          </td>
+          <td class="tags">
+            {{#each item.tags as |tag|}}
+              <span class="discourse-tag">{{tag}}</span>
+            {{/each}}
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{/if}}
