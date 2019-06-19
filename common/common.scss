@@ -1,0 +1,38 @@
+.kb-active {
+  .topic-list .posts-map, .topic-list .posts, .topic-list .views { display: none; }
+  .kb-search {
+    align-items: center;
+    background-color: $primary-very-high;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+  }
+  .kb-area {
+    display: flex;
+    .kb-tags{
+      background-color: $primary-low;
+      padding: 10px;
+      .kb-tag {
+        cursor: pointer;
+        height: 30px;
+        margin-left: 10px;
+        &:hover {
+          color: $primary-very-high;
+        }
+      }
+      .kb-tag:not(.selected)::before {
+        content: "+ ";
+       
+      }
+      .selected {
+        font-weight: bold;
+        &::before {
+          content: "x ";
+        }
+      }
+    }
+    .kb-search-results .discourse-tag:not(:only-child):not(:last-child){
+      margin-right: 5px;
+    }
+  }
+}

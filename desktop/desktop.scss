@@ -1,13 +1,7 @@
 .kb-active {
-  .topic-list .posts-map, .topic-list .posts, .topic-list .views { display: none; }
   .kb-search {
-    align-items: center;
-    background-color: $primary-very-high;
-    display: flex;
     font-size: 24px;
     height: 100px;
-    justify-content: center;
-    margin-bottom: 15px;
 
     .kb-search-bar {
       height: 50px;
@@ -16,33 +10,12 @@
     }
   }
   .kb-area {
-    display: flex;
     .kb-tags{
-      background-color: $primary-low;
       flex-basis: 25%;
       margin-right: 25px;
-      padding: 10px;
-      .kb-tag {
-        cursor: pointer;
-        height: 30px;
-        margin-left: 10px;
-        &:hover {
-          color: $primary-very-high;
-        }
-      }
-      .selected {
-        font-weight: bold;
-      }
-      .subtag {
-        margin-left: 25px;
-      }
-    
     }
     .contents, .kb-search-results {
       flex-basis: 75%;
-    }
-    .kb-search-results .tags .discourse-tag:not(:only-child):not(:last-child)::after {
-      content: ", " 
     }
   }
 }
