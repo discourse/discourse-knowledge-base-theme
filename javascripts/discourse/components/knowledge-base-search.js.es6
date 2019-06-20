@@ -12,7 +12,7 @@ export default Ember.Component.extend({
 
   filterTopics: debounce(function(){
     const filter = this.get("filter");
-    if (filter == "") {
+    if (filter === "") {
       this.set("filteredList", null);
       return;
     }

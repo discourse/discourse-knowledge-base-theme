@@ -9,7 +9,7 @@ export default Ember.Component.extend({
   @computed("filteredList")
   empty(filteredList){
     console.log(filteredList);
-    return (filteredList == "empty") ? true : false;
+    return (filteredList === "empty") ? true : false;
   }
 
 

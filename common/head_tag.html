@@ -139,7 +139,7 @@
       const tagsEnabled = siteSettings.tagging_enabled;
       const tagFilterEnabled = siteSettings.show_filter_by_tag;
 
-      if (kbCategories.length == 0) {
+      if (kbCategories.length === 0) {
         return false;
       }
       else if (!tagsEnabled || !tagFilterEnabled) {
