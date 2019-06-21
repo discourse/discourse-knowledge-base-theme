@@ -1,3 +1,9 @@
 <div class="kb-tag {{if tag.active 'selected'}} {{if subtag 'subtag'}}">
-  {{tag.id}} 
+  {{#unless tag.active}}
+    {{d-icon "plus"}}
+  {{/unless}}
+  {{tag.id}}
+  {{#if tag.active}}
+    {{d-icon "times-circle"}}
+  {{/if}}
 </div>

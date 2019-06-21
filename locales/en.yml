@@ -1,4 +1,6 @@
 en:
-  kb: 
+  kb:
     search:
       placeholder: "Search..."
+    sidebar:
+      title: "tags"

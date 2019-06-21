@@ -1,7 +1,7 @@
 .kb-active {
   .kb-search {
-    font-size: 24px;
-    height: 100px;
+    font-size: $font-up-2;
+    padding: 1.5em 1em;
 
     .kb-search-bar {
       height: 50px;
@@ -10,11 +10,12 @@
     }
   }
   .kb-area {
-    .kb-tags{
+    .kb-tags {
       flex-basis: 25%;
       margin-right: 25px;
     }
-    .contents, .kb-search-results {
+    .contents,
+    .kb-search-results {
       flex-basis: 75%;
     }
   }

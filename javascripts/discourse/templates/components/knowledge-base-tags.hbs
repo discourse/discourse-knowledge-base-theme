@@ -1,4 +1,5 @@
-<h3><a href="/c/{{category.slug}}">#{{category.name}} Knowledge Base</a></h3>
+<h3><a href="/c/{{category.slug}}">#{{category.name}} {{theme-i18n "kb.sidebar.title"}}
+</a></h3>
 
 {{#each tags as |tag|}}
     {{knowledge-base-tag tag=tag category=category activeTagSelection=activeTagSelection filteredList=filteredList}}
