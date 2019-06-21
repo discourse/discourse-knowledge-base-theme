@@ -124,13 +124,15 @@
     kbParams(){
       const params = window.location.search;
       if (params) {
-        let tagsParam = params.match(/tags=([^&]*)/)[1];
-        tagsParam = decodeURIComponent(tagsParam);
-        return tagsParam
+        const tagsParamMatch = params.match(/tags=([^&]*)/)
+        if (tagsParamMatch) {
+            return decodeURIComponent(tagsParamMatch[1]);
+        }
       }
 
       return false;
     },
+
 
     @computed("discoveryCategory")
     active(category) {
