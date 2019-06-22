@@ -9,14 +9,13 @@
     background-color: $primary-very-low;
     display: flex;
     justify-content: center;
-    margin-bottom: 1em;
+    margin-bottom: 15px;
     padding: 0 1em;
   }
   .kb-area {
     display: flex;
     .kb-tags {
       padding: 10px 10px 10px 0;
-      border-right: 1px solid $primary-low;
       a {
         color: $primary;
       }

@@ -12,11 +12,21 @@
   .kb-area {
     .kb-tags {
       flex-basis: 25%;
-      margin-right: 25px;
+      @if $sticky-sidebar == "true" {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 70px;
+        align-self: flex-start;
+        max-height: calc(100vh - 100px);
+        overflow: hidden;
+        overflow-y: scroll;
+      }
     }
     .contents,
     .kb-search-results {
       flex-basis: 75%;
+      padding-left: 25px;
+      border-left: 1px solid $primary-low;
     }
   }
 }
