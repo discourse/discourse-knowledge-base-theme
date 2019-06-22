@@ -15,8 +15,6 @@ function sortCount(a, b) {
 }
 
 export default Ember.Component.extend({
-
-  tagName: "div",
   classNames: "kb-tags",
   kbHelper: Ember.inject.service(),
 
@@ -31,8 +29,7 @@ export default Ember.Component.extend({
 
     const topTags = this.get("site.top_tags");
 
-    ajax("/tags.json").then((result) => {
-
+    ajax("/tags.json").then(result => {
       const sortSetting = settings.sort_tags;
       const siteTags = result.tags;
       let kbTags = siteTags.filter(tag => topTags.includes(tag.id));
@@ -40,7 +37,7 @@ export default Ember.Component.extend({
       if (tagParam) { //if we're filtered already
         //filter down to just active tags
         kbTags = kbTags.filter(tag => tagParam.includes(tag.id));  
-        kbTags.map((tag) => {
+        kbTags.forEach(tag => {
           tag.active = true
           tag.count = 0;
         });
@@ -49,10 +46,10 @@ export default Ember.Component.extend({
         const topics = this.get("topics");
         let subtags = []; 
 
-        topics.map((topic) => {
+        topics.forEach(topic => {
           let topicTags = topic.tags;
 
-          topicTags.map((tag) => {
+          topicTags.forEach(tag => {
 
             if (tagParam.includes(tag)) { //increment count for active tags
               let index = kbTags.findIndex(t => t.id === tag);
@@ -83,7 +80,6 @@ export default Ember.Component.extend({
         });
 
         this.set("subtags", subtags); 
-
       }
 
       kbTags.sort((a,b) => {
@@ -96,11 +92,6 @@ export default Ember.Component.extend({
       });
 
       this.set("tags", kbTags);
-
     });
   },
-
-
-
-
 });

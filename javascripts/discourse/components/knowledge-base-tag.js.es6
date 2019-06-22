@@ -2,7 +2,6 @@ import computed from "ember-addons/ember-computed-decorators";
 import DiscourseURL from "discourse/lib/url";
 
 export default Ember.Component.extend({
-
   kbHelper: Ember.inject.service(),
 
   @computed("category", "tag")
@@ -12,7 +11,6 @@ export default Ember.Component.extend({
 
   click(event) {
     this.set("filteredList", null);
-    DiscourseURL.routeTo(`${this.href}`, { replaceURL: true });
+    DiscourseURL.routeTo(this.href, { replaceURL: true });
   }
-
 });
