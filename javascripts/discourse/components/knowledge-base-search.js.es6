@@ -16,8 +16,9 @@ export default Ember.Component.extend({
     }
 
     const category = this.get("category");
+    const tags = this.kbHelper.kbParams();
 
-    knowledgeBase.findKBFromCategory(category, filter).then(result => {
+    knowledgeBase.findKBFromCategory(category, tags, filter).then(result => {
       if (!result.topics) {
         this.set("filteredList", "empty");
       }
