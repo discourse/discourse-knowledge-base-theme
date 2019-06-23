@@ -14,24 +14,6 @@ export default {
     withPluginApi("0.8", api => {
       api.addDiscoveryQueryParam("tags", { replace: true, refreshModel: true });
 
-      api.modifyClass("component:bread-crumbs", {
-        kbHelper: Ember.inject.service(),
-
-        @computed("kbHelper.active")
-        kbActive(active) {
-          return active;
-        }
-      });
-
-      api.modifyClass("component:d-navigation", {
-        kbHelper: Ember.inject.service(),
-
-        @computed("kbHelper.active")
-        kbActive(active) {
-          return active;
-        }
-      });
-
       api.modifyClass("controller:discovery/topics", {
         kbHelper: Ember.inject.service(),
         filteredList: null,
