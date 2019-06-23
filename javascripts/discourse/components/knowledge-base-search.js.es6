@@ -3,9 +3,7 @@ import { observes } from "ember-addons/ember-computed-decorators";
 import debounce from "discourse/lib/debounce";
 
 export default Ember.Component.extend({
-
   filter: null,
-  tagName: "div",
   classNames: "kb-search",
 
   kbHelper: Ember.inject.service(),
@@ -18,18 +16,15 @@ export default Ember.Component.extend({
     }
 
     const category = this.get("category");
-    const self = this;
 
     knowledgeBase.findKBFromCategory(category, filter).then(result => {
       if (!result.topics) {
-        self.set("filteredList", "empty");
+        this.set("filteredList", "empty");
       }
       else {
-        self.set("filteredList", result.topics);
+        this.set("filteredList", result.topics);
       }
     });
     
   }, 250).observes("filter"),
-
-
 });
