@@ -5,6 +5,11 @@ export default Ember.Component.extend({
   kbHelper: Ember.inject.service(),
 
   @computed("filteredList")
+  count(filteredList) {
+    return filteredList.length;
+  },
+
+  @computed("filteredList")
   empty(filteredList){
     return filteredList === "empty";
   }

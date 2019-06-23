@@ -2,5 +2,8 @@ en:
   kb:
     search:
       placeholder: "Search..."
+      results:
+        one: "%{count} result found"
+        other: "%{count} results found"
     sidebar:
       title: "tags"

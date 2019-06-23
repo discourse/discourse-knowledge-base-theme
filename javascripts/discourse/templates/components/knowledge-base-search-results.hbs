@@ -1,7 +1,7 @@
-<h2>KB Search Results</h2>
 {{#if empty}}
   {{i18n 'search.no_results'}}
 {{else}}
+  {{theme-i18n "kb.search.results" count=count}}
   <table class="topic-list">
     <thead>
       <th>Topic</th>
