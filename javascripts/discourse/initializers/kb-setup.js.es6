@@ -13,6 +13,16 @@ export default {
   initialize() {
     withPluginApi("0.8", api => {
       api.addDiscoveryQueryParam("tags", { replace: true, refreshModel: true });
+      api.onPageChange((url, title) => {
+        const kbCategories = settings.kb_categories.split("|").filter(n => n);
+         
+        if (kbCategories.some((category) => url.includes(category))) {
+          document.body.classList.add("kb-active");
+        }
+        else {
+          document.body.classList.remove("kb-active");
+	}
+      });
 
       api.modifyClass("controller:discovery/topics", {
         kbHelper: Ember.inject.service(),
@@ -110,15 +120,6 @@ export default {
           return enabledForCategory
         },
 
-        @on("init")
-        @observes("active")
-        updateClasses() {
-          if (this.active) {
-            document.body.classList.add("kb-active");
-          } else {
-            document.body.classList.remove("kb-active");
-          }
-        },
       }));
     });
   }
