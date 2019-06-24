@@ -2,11 +2,19 @@
 </a></h3>
 
 {{#each tags as |tag|}}
-    {{knowledge-base-tag tag=tag category=category activeTagSelection=activeTagSelection filteredList=filteredList}}
+    {{knowledge-base-tag
+      tag=tag category=category
+      activeTagSelection=activeTagSelection
+      resetSearchResults=resetSearchResults}}
 {{/each}}
 
 {{#if subtags}}
    {{#each subtags as |tag|}}
-     {{knowledge-base-tag tag=tag category=category activeTagSelection=activeTagSelection filteredList=filteredList subtag=true}}
+     {{knowledge-base-tag
+       tag=tag
+       category=category
+       activeTagSelection=activeTagSelection
+       resetSearchResults=resetSearchResults
+       subtag=true}}
    {{/each}}
 {{/if}}

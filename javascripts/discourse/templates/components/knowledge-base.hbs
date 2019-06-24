@@ -1,0 +1,16 @@
+{{#if active}}
+  {{knowledge-base-search category=category searchResults=searchResults searchTerm=searchTerm}}
+  <div class="kb-area">
+    {{knowledge-base-tags
+      category=category
+      model=model
+      searchResults=searchResults}}
+    {{#if hasSearchResults}}
+      {{knowledge-base-search-results searchResults=searchResults}}
+    {{else}}
+      {{yield true}}
+    {{/if}}
+  </div>
+{{else}}
+  {{yield false}}
+{{/if}}
