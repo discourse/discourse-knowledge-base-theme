@@ -8,8 +8,7 @@ export default {
       api.addDiscoveryQueryParam("tags", { replace: true, refreshModel: true });
       api.onPageChange((url, title) => {
         const kbCategories = settings.kb_categories.split("|").filter(n => n);
-         
-        if (kbCategories.some((category) => url.includes(category))) {
+        if (kbCategories.some((category) => url.includes(`/c/${category}`))) {
           document.body.classList.add("kb-active");
         }
         else {
