@@ -1,1 +1,8 @@
-{{text-field value=filter class="kb-search-bar" placeholderKey=(theme-prefix "kb.search.placeholder") autocorrect="off" autocapitalize="off"}}
+<input
+  type="text"
+  value={{searchTerm}}
+  oninput={{action "onSearchTermChange"}}
+  class="kb-search-bar"
+  placeholder={{theme-i18n 'kb.search.placeholder'}}
+  autocorrect="off"
+  autocapitalize="off">

@@ -1,12 +1,14 @@
 import computed from "ember-addons/ember-computed-decorators";
 import { on, observes } from "ember-addons/ember-computed-decorators";
 import { ajax } from "discourse/lib/ajax";
+import { kbParams } from "discourse/components/knowledge-base";
 
 function sortAlpha(a, b) {
   let aName = a.id.toLowerCase();
   let bName = b.id.toLowerCase();
   return (aName < bName) ? -1 : (aName > bName) ? 1 : 0;
 }
+
 function sortCount(a, b) {
   let aCount = a.count;
   let bCount = b.count;
@@ -14,14 +16,29 @@ function sortCount(a, b) {
   return bCount - aCount || a.id.localeCompare(b.id);
 }
 
+let cachedResults = null;
+let lastFetchDate = null;
+
 export default Ember.Component.extend({
   classNames: "kb-tags",
-  kbHelper: Ember.inject.service(),
+
+  fetchTags() {
+    if (!lastFetchDate || !cachedResults || lastFetchDate + (3600 * 1000) < Date.now()) {
+      const promise = ajax("/tags.json");
+      promise.then(result => {
+        cachedResults = result;
+        lastFetchDate = Date.now();
+      });
+      return promise;
+    } else {
+      return Ember.RSVP.resolve(cachedResults);
+    }
+  },
 
   @on("init")
   @observes("topics")
-  getTags() { 
-    let tagParam = this.kbHelper.kbParams();
+  getTags() {
+    let tagParam = kbParams();
 
     if (tagParam) {
        tagParam = tagParam.split(" ");
@@ -29,9 +46,9 @@ export default Ember.Component.extend({
 
     const topTags = this.get("site.top_tags");
 
-    ajax("/tags.json").then(result => {
+    this.fetchTags().then(result => {
       const sortSetting = settings.sort_tags;
-      const siteTags = result.tags;
+      const siteTags = result.tags.map(t => Ember.$.extend({}, t));
       let kbTags = siteTags.filter(tag => topTags.includes(tag.id));
 
       if (tagParam) { //if we're filtered already
@@ -43,7 +60,7 @@ export default Ember.Component.extend({
         });
 
         //process subtags
-        const topics = this.get("topics");
+        const topics = this.get("model.topics");
         let subtags = []; 
 
         topics.forEach(topic => {

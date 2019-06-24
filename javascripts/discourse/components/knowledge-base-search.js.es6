@@ -1,31 +1,28 @@
 import knowledgeBase from 'discourse/models/knowledge-base';
-import { observes } from "ember-addons/ember-computed-decorators";
-import debounce from "discourse/lib/debounce";
+import { kbParams } from 'discourse/components/knowledge-base';
 
 export default Ember.Component.extend({
-  filter: null,
   classNames: "kb-search",
 
-  kbHelper: Ember.inject.service(),
-
-  filterTopics: debounce(function(){
-    const filter = this.get("filter");
-    if (filter === "") {
-      this.set("filteredList", null);
+  performSearch(term) {
+    if (term.length < this.siteSettings.min_search_term_length) {
+      this.set("searchResults", null);
       return;
     }
 
     const category = this.get("category");
-    const tags = this.kbHelper.kbParams();
+    const tags = kbParams();
 
-    knowledgeBase.findKBFromCategory(category, tags, filter).then(result => {
-      if (!result.topics) {
-        this.set("filteredList", "empty");
-      }
-      else {
-        this.set("filteredList", result.topics);
-      }
+    knowledgeBase.findKBFromCategory(category, tags, term).then(result => {
+      this.set("searchResults", result.topics || []);
     });
-    
-  }, 250).observes("filter"),
+  },
+
+  actions: {
+    onSearchTermChange(e) {
+      const term = e.target.value;
+      this.set("searchTerm", term);
+      Ember.run.debounce(this, this.performSearch, term, 250);
+    }
+  }
 });

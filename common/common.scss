@@ -8,6 +8,13 @@
   .topic-list .views {
     display: none;
   }
+  .topic-list-bottom {
+    #dismiss-topics,
+    #dismiss-new,
+    .footer-message {
+      display: none;
+    }
+  }
   .kb-search {
     align-items: center;
     background-color: $primary-very-low;
