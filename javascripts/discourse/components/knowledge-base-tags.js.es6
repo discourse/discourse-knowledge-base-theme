@@ -38,7 +38,7 @@ export default Ember.Component.extend({
   @on("init")
   @observes("topics")
   getTags() {
-    let tagParam = kbParams();
+    let tagParam = kbParams({filter: "tags"});
 
     if (tagParam) {
        tagParam = tagParam.split(" ");
