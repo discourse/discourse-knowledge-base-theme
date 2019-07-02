@@ -1,5 +1,5 @@
-import knowledgeBase from 'discourse/models/knowledge-base';
-import { kbParams } from 'discourse/components/knowledge-base';
+import knowledgeBase from "discourse/models/knowledge-base";
+import { kbParams } from "discourse/components/knowledge-base";
 
 export default Ember.Component.extend({
   classNames: "kb-search",
@@ -11,7 +11,7 @@ export default Ember.Component.extend({
     }
 
     const category = this.get("category");
-    const tags = kbParams();
+    const tags = kbParams({ filter: "tags" });
 
     knowledgeBase.findKBFromCategory(category, tags, term).then(result => {
       this.set("searchResults", result.topics || []);
