@@ -1,5 +1,6 @@
 import { hrefForCategory, kbParams } from "discourse/components/knowledge-base";
 import { default as computed } from "ember-addons/ember-computed-decorators";
+import DiscourseURL from "discourse/lib/url";
 
 export default Ember.Component.extend({
   tagName: "a",
