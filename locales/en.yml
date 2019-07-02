@@ -1,5 +1,6 @@
 en:
   kb:
+    menu_label: "KB"
     search:
       placeholder: "Search..."
       results:

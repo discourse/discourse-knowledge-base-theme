@@ -27,7 +27,7 @@ export default Ember.Component.extend({
 
   filterTopicsList() {
     const model = this.model;
-    let tagsFilter = kbParams();
+    let tagsFilter = kbParams({filter: "tags"});
 
     if (tagsFilter) {
       tagsFilter = tagsFilter.split(" ");
@@ -40,7 +40,8 @@ export default Ember.Component.extend({
     const kbCategories = settings.kb_categories.split("|").filter(n => n);
     const tagsEnabled = this.siteSettings.tagging_enabled;
     const tagFilterEnabled = this.siteSettings.show_filter_by_tag;
-    const enabledForCategory = category && kbCategories.includes(category.slug)
+    const activeParams = kbParams({filter: "kb"});
+    const enabledForCategory = category && kbCategories.includes(category.slug) && activeParams;
 
     if (kbCategories.length === 0) {
       return false;
@@ -58,10 +59,19 @@ export default Ember.Component.extend({
   }
 });
 
-export function kbParams() {
+export function kbParams(options) {
   const params = window.location.search;
+  let match = "";
   if (params) {
-    const match = params.match(/tags=([^&]*)/);
+    // filter by tags
+    if (options.filter === "tags") {
+      match = params.match(/tags=([^&]*)/);
+    }
+    // filter by kb active
+    else if (options.filter === "kb") {
+      match = params.match(/kb=([^&]*)/);
+    }
+
     if (match) {
       return decodeURIComponent(match[1]);
     }
@@ -72,7 +82,7 @@ export function hrefForTag(category, tagName) {
   let destinationURL = "";
   if (category && tagName) {
     const slug = Discourse.Category.slugFor(category);
-    let tagsParam = kbParams();
+    let tagsParam = kbParams({filter: "tags"});
 
     if (tagsParam) { //if existing params
       if (tagsParam.includes(tagName)) { // removing a param
@@ -81,19 +91,36 @@ export function hrefForTag(category, tagName) {
         tagsParam = tagsParam.replace(/^\s+|\s+$/g, '');
 
         if (tagsParam === "") { // if no params, send base category URL
-          destinationURL = `/c/${slug}?tags=`;
+          destinationURL = `/c/${slug}?kb=active&tags=`;
         }
         else {
-          destinationURL = `/c/${slug}?tags=${tagsParam}`; // send URL with removed params
+          destinationURL = `/c/${slug}?kb=active&tags=${tagsParam}`; // send URL with removed params
         }
       }
       else { //if adding new param
-        destinationURL = `/c/${slug}?tags=${tagsParam} ${tagName}`; 
+        destinationURL = `/c/${slug}?kb=active&tags=${tagsParam} ${tagName}`; 
       }
     }
     else { //if no existing params
-      destinationURL = `/c/${slug}?tags=${tagName}`;
+      destinationURL = `/c/${slug}?kb=active&tags=${tagName}`;
     }
   }
   return destinationURL;
+}
+
+export function hrefForCategory(category){
+  let destinationURL = "";
+  if (category) {
+    const slug = Discourse.Category.slugFor(category);
+    let categoryParam = kbParams({filter: "kb"});
+
+    if (!categoryParam) {
+      destinationURL = `/c/${slug}?kb=active`;
+    }
+    else {
+      destinationURL = `/c/${slug}`;
+    }
+
+    return destinationURL;
+  }
 }
