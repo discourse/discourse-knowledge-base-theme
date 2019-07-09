@@ -1,0 +1,23 @@
+.kb-active {
+  .kb-search {
+    font-size: $font-up-2;
+    padding: 1.5em 1em;
+
+    .kb-search-bar {
+      height: 50px;
+      margin-bottom: 0px;
+      width: 500px;
+    }
+  }
+  .kb-area {
+    flex-direction: column;
+    .kb-tags {
+      flex-basis: 100%;
+      padding: 1em 0;
+    }
+    .contents,
+    .kb-search-results {
+      flex-basis: 100%;
+    }
+  }
+}
