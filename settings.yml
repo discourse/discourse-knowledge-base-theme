@@ -10,6 +10,10 @@ sort_tags:
     - alphabetical
     - popularity
 
+default_to_kb_view:
+  default: false
+  description:
+    en: Selected categories automatically show KB view by default
 sticky_sidebar:
   default: false
   description:
