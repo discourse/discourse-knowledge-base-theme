@@ -34,11 +34,32 @@ export default {
           }
         }
       });
+      api.modifyClass("route:discovery.category", {
+        beforeModel(transition) {
+          const activeParams = kbParams({ filter: "kb" });
+          const kbCategories = settings.kb_categories.split("|").filter(n => n);
+          const slug = transition.to.params.slug;
+          if (
+            !activeParams &&
+            kbCategories.some(cat => cat === slug) &&
+            settings.default_to_kb_view &&
+            transition.queryParams.kb !== "active"
+          ) {
+            this.transitionTo("discovery.category", transition.to.params.slug, {
+              queryParams: { kb: "active" }
+            });
+          } else {
+            return this._super(...arguments);
+          }
+        }
+      });
       api.onPageChange((url, title) => {
         const kbCategories = settings.kb_categories.split("|").filter(n => n);
         const activeParams = kbParams({ filter: "kb" });
         if (
-          kbCategories.some(category => url.includes(`/c/${category}`)) &&
+          kbCategories.some(category =>
+            url.includes(new RegExp("/c/[^&]*/*" + category))
+          ) &&
           activeParams
         ) {
           document.body.classList.add("kb-active");
