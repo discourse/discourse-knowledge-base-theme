@@ -22,7 +22,8 @@ export default {
             !activeParams &&
             kbCategories.some(cat => cat === slug) &&
             settings.default_to_kb_view &&
-            transition.queryParams.kb !== "active"
+            (!transition.queryParams || 
+            transition.queryParams.kb !== "active")
           ) {
             this.transitionTo(
               "discovery.parentCategory",
@@ -43,7 +44,8 @@ export default {
             !activeParams &&
             kbCategories.some(cat => cat === slug) &&
             settings.default_to_kb_view &&
-            transition.queryParams.kb !== "active"
+            (!transition.queryParams || 
+            transition.queryParams.kb !== "active")
           ) {
             this.transitionTo("discovery.category", transition.to.params.slug, {
               queryParams: { kb: "active" }
