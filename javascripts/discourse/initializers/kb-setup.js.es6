@@ -16,7 +16,7 @@ export default {
       api.modifyClass("route:discovery.parentCategory", {
         beforeModel(transition) {
           const activeParams = kbParams({ filter: "kb" });
-          const kbCategories = settings.kb_categories.split("|").filter(n => n);
+          const kbCategories = settings.kb_categories.split("|").filter(n => n).map(n => n.toLowerCase());
           const slug = transition.to.params.slug;
           if (
             !activeParams &&
@@ -38,7 +38,7 @@ export default {
       api.modifyClass("route:discovery.category", {
         beforeModel(transition) {
           const activeParams = kbParams({ filter: "kb" });
-          const kbCategories = settings.kb_categories.split("|").filter(n => n);
+          const kbCategories = settings.kb_categories.split("|").filter(n => n).map(n => n.toLowerCase());
           const slug = transition.to.params.slug;
           if (
             !activeParams &&
@@ -56,7 +56,8 @@ export default {
         }
       });
       api.onPageChange((url, title) => {
-        const kbCategories = settings.kb_categories.split("|").filter(n => n);
+        const kbCategories = settings.kb_categories.split("|").filter(n => n).map(n => n.toLowerCase());
+        debugger;
         const activeParams = kbParams({ filter: "kb" });
         if (
           kbCategories.some(category =>

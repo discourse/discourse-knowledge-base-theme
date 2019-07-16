@@ -37,7 +37,7 @@ export default Ember.Component.extend({
 
   @computed("category")
   active(category) {
-    const kbCategories = settings.kb_categories.split("|").filter(n => n);
+    const kbCategories = settings.kb_categories.split("|").filter(n => n).map(n => n.toLowerCase());
     const tagsEnabled = this.siteSettings.tagging_enabled;
     const tagFilterEnabled = this.siteSettings.show_filter_by_tag;
     const activeParams = kbParams({filter: "kb"});
