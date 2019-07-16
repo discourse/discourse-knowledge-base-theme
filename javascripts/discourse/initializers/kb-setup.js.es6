@@ -60,7 +60,7 @@ export default {
         const activeParams = kbParams({ filter: "kb" });
         if (
           kbCategories.some(category =>
-            url.includes(new RegExp("/c/[^&]*/*" + category))
+            url.includes(category) && url.match(new RegExp(`/c/[^&]*/*${category}`))
           ) &&
           activeParams
         ) {
