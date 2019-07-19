@@ -57,7 +57,6 @@ export default {
       });
       api.onPageChange((url, title) => {
         const kbCategories = settings.kb_categories.split("|").filter(n => n).map(n => n.toLowerCase());
-        debugger;
         const activeParams = kbParams({ filter: "kb" });
         if (
           kbCategories.some(category =>
