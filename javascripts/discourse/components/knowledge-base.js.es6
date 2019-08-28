@@ -1,5 +1,10 @@
-import knowledgeBase from 'discourse/models/knowledge-base';
-import { default as computed, observes, on } from "ember-addons/ember-computed-decorators";
+import knowledgeBase from "discourse/models/knowledge-base";
+import {
+  default as computed,
+  observes,
+  on
+} from "ember-addons/ember-computed-decorators";
+import Category from "discourse/models/category";
 import debounce from "discourse/lib/debounce";
 
 function arrayContainsArray(superset, subset) {
@@ -27,30 +32,37 @@ export default Ember.Component.extend({
 
   filterTopicsList() {
     const model = this.model;
-    let tagsFilter = kbParams({filter: "tags"});
+    let tagsFilter = kbParams({ filter: "tags" });
 
     if (tagsFilter) {
       tagsFilter = tagsFilter.split(" ");
-      model.set("topics", model.topics.filter(topic => arrayContainsArray(topic.tags, tagsFilter)));
+      model.set(
+        "topics",
+        model.topics.filter(topic => arrayContainsArray(topic.tags, tagsFilter))
+      );
     }
   },
 
   @computed("category")
   active(category) {
-    const kbCategories = settings.kb_categories.split("|").filter(n => n).map(n => n.toLowerCase());
+    const categoryIds = settings.kb_categories.split("|");
+    const kbCategories = Category.findByIds(categoryIds).map(cat => cat.slug);
     const tagsEnabled = this.siteSettings.tagging_enabled;
     const tagFilterEnabled = this.siteSettings.show_filter_by_tag;
-    const activeParams = kbParams({filter: "kb"});
-    const enabledForCategory = category && kbCategories.includes(category.slug) && activeParams;
+    const activeParams = kbParams({ filter: "kb" });
+    const enabledForCategory =
+      category && kbCategories.includes(category.slug) && activeParams;
 
     if (kbCategories.length === 0) {
       return false;
     }
     if (!tagsEnabled || !tagFilterEnabled) {
-      console.warn("Knowledge Base Theme Component requires the following site settings to be enabled: `tagging_enabled` and `show_filter_by_tag`");
+      console.warn(
+        "Knowledge Base Theme Component requires the following site settings to be enabled: `tagging_enabled` and `show_filter_by_tag`"
+      );
       return false;
     }
-    return enabledForCategory
+    return enabledForCategory;
   },
 
   @computed("searchResults")
@@ -82,42 +94,43 @@ export function hrefForTag(category, tagName) {
   let destinationURL = "";
   if (category && tagName) {
     const slug = Discourse.Category.slugFor(category);
-    let tagsParam = kbParams({filter: "tags"});
+    let tagsParam = kbParams({ filter: "tags" });
 
-    if (tagsParam) { //if existing params
-      if (tagsParam.includes(tagName)) { // removing a param
+    if (tagsParam) {
+      //if existing params
+      if (tagsParam.includes(tagName)) {
+        // removing a param
 
-        tagsParam = tagsParam.replace(tagName, '');
-        tagsParam = tagsParam.replace(/^\s+|\s+$/g, '');
+        tagsParam = tagsParam.replace(tagName, "");
+        tagsParam = tagsParam.replace(/^\s+|\s+$/g, "");
 
-        if (tagsParam === "") { // if no params, send base category URL
+        if (tagsParam === "") {
+          // if no params, send base category URL
           destinationURL = `/c/${slug}?kb=active&tags=`;
-        }
-        else {
+        } else {
           destinationURL = `/c/${slug}?kb=active&tags=${tagsParam}`; // send URL with removed params
         }
+      } else {
+        //if adding new param
+        destinationURL = `/c/${slug}?kb=active&tags=${tagsParam} ${tagName}`;
       }
-      else { //if adding new param
-        destinationURL = `/c/${slug}?kb=active&tags=${tagsParam} ${tagName}`; 
-      }
-    }
-    else { //if no existing params
+    } else {
+      //if no existing params
       destinationURL = `/c/${slug}?kb=active&tags=${tagName}`;
     }
   }
   return destinationURL;
 }
 
-export function hrefForCategory(category){
+export function hrefForCategory(category) {
   let destinationURL = "";
   if (category) {
     const slug = Discourse.Category.slugFor(category);
-    let categoryParam = kbParams({filter: "kb"});
+    let categoryParam = kbParams({ filter: "kb" });
 
     if (!categoryParam) {
       destinationURL = `/c/${slug}?kb=active`;
-    }
-    else {
+    } else {
       destinationURL = `/c/${slug}`;
     }
 

@@ -6,6 +6,7 @@ import {
 import DiscourseURL from "discourse/lib/url";
 import { withPluginApi } from "discourse/lib/plugin-api";
 import { kbParams } from "discourse/components/knowledge-base";
+import Category from "discourse/models/category";
 
 export default {
   name: "kb-setup",
@@ -16,14 +17,12 @@ export default {
       api.modifyClass("route:discovery.parentCategory", {
         beforeModel(transition) {
           const activeParams = kbParams({ filter: "kb" });
-          const kbCategories = settings.kb_categories
-            .split("|")
-            .filter(n => n)
-            .map(n => n.toLowerCase());
+          const categoryIds = settings.kb_categories.split("|");
+          const kbCategories = Category.findByIds(categoryIds);
           const slug = transition.to.params.slug;
           if (
             !activeParams &&
-            kbCategories.some(cat => cat === slug) &&
+            kbCategories.some(cat => cat.slug === slug) &&
             settings.default_to_kb_view &&
             (!transition.queryParams || transition.queryParams.kb !== "active")
           ) {
@@ -40,13 +39,11 @@ export default {
       api.modifyClass("route:discovery.category", {
         beforeModel(transition) {
           const activeParams = kbParams({ filter: "kb" });
-          const kbCategories = settings.kb_categories
-            .split("|")
-            .filter(n => n)
-            .map(n => n.toLowerCase());
+          const categoryIds = settings.kb_categories.split("|");
+          const kbCategories = Category.findByIds(categoryIds);
           const slug = transition.to.params.slug;
           if (
-            kbCategories.some(cat => cat === slug) &&
+            kbCategories.some(cat => cat.slug === slug) &&
             settings.default_to_kb_view &&
             (!transition.queryParams || transition.queryParams.kb !== "active")
           ) {
@@ -59,16 +56,14 @@ export default {
         }
       });
       api.onPageChange((url, title) => {
-        const kbCategories = settings.kb_categories
-          .split("|")
-          .filter(n => n)
-          .map(n => n.toLowerCase());
+        const categoryIds = settings.kb_categories.split("|");
+        const kbCategories = Category.findByIds(categoryIds);
         const activeParams = kbParams({ filter: "kb" });
         if (
           kbCategories.some(
             category =>
-              url.includes(category) &&
-              url.match(new RegExp(`/c/[^&]*/*${category}`))
+              url.includes(category.slug) &&
+              url.match(new RegExp(`/c/[^&]*/*${category.slug}`))
           ) &&
           activeParams
         ) {

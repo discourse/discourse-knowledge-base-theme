@@ -1,6 +1,7 @@
 kb_categories:
   type: list
   default: ""
+  list_type: category
   description:
     en: A list of category slugs where the Knowledge Base UI should appear. Defaults to off.
 sort_tags:
