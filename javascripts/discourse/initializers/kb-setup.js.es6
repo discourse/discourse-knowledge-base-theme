@@ -16,49 +16,59 @@ export default {
       api.addDiscoveryQueryParam("kb", { replace: true, refreshModel: true });
       api.modifyClass("route:discovery.parentCategory", {
         beforeModel(transition) {
-          const activeParams = kbParams({ filter: "kb" });
-          const categoryIds = settings.kb_categories.split("|");
-          const kbCategories = Category.findByIds(categoryIds);
-          const slug = transition.to.params.slug;
-          if (
-            !activeParams &&
-            kbCategories &&
-            kbCategories.some(cat => cat.slug === slug) &&
-            settings.default_to_kb_view &&
-            (!transition.queryParams || transition.queryParams.kb !== "active")
-          ) {
-            this.transitionTo(
-              "discovery.parentCategory",
-              transition.to.params.slug,
-              { queryParams: { kb: "active" } }
-            );
-          } else {
-            return this._super(...arguments);
+          if (kbParams && Category) {
+            const activeParams = kbParams({ filter: "kb" });
+            const categoryIds = settings.kb_categories.split("|");
+            const kbCategories = Category.findByIds(categoryIds);
+            const slug = transition.to.params.slug;
+            if (
+              !activeParams &&
+              kbCategories &&
+              kbCategories.some(cat => cat.slug === slug) &&
+              settings.default_to_kb_view &&
+              (!transition.queryParams ||
+                transition.queryParams.kb !== "active")
+            ) {
+              this.transitionTo(
+                "discovery.parentCategory",
+                transition.to.params.slug,
+                { queryParams: { kb: "active" } }
+              );
+            } else {
+              return this._super(...arguments);
+            }
           }
         }
       });
       api.modifyClass("route:discovery.category", {
         beforeModel(transition) {
-          const activeParams = kbParams({ filter: "kb" });
-          const categoryIds = settings.kb_categories.split("|");
-          const kbCategories = Category.findByIds(categoryIds);
-          const slug = transition.to.params.slug;
-          if (
-            kbCategories &&
-            kbCategories.some(cat => cat.slug === slug) &&
-            settings.default_to_kb_view &&
-            (!transition.queryParams || transition.queryParams.kb !== "active")
-          ) {
-            this.transitionTo("discovery.category", transition.to.params.slug, {
-              queryParams: { kb: "active" }
-            });
-          } else {
-            return this._super(...arguments);
+          if (kbParams && Category) {
+            const activeParams = kbParams({ filter: "kb" });
+            const categoryIds = settings.kb_categories.split("|");
+            const kbCategories = Category.findByIds(categoryIds);
+            const slug = transition.to.params.slug;
+            if (
+              kbCategories &&
+              kbCategories.some(cat => cat.slug === slug) &&
+              settings.default_to_kb_view &&
+              (!transition.queryParams ||
+                transition.queryParams.kb !== "active")
+            ) {
+              this.transitionTo(
+                "discovery.category",
+                transition.to.params.slug,
+                {
+                  queryParams: { kb: "active" }
+                }
+              );
+            } else {
+              return this._super(...arguments);
+            }
           }
         }
       });
       api.onPageChange((url, title) => {
-        if (kbParams) {
+        if (kbParams && Category) {
           const categoryIds = settings.kb_categories.split("|");
           const kbCategories = Category.findByIds(categoryIds);
           const activeParams = kbParams({ filter: "kb" });
@@ -80,11 +90,13 @@ export default {
       api.modifyClass("component:navigation-item", {
         @computed("content.filterMode", "filterMode")
         active(contentFilterMode, filterMode) {
-          const active = kbParams({ filter: "kb" });
-          if (active) {
-            return false;
+          if (kbParams) {
+            const active = kbParams({ filter: "kb" });
+            if (active) {
+              return false;
+            }
+            return this._super(contentFilterMode, filterMode);
           }
-          return this._super(contentFilterMode, filterMode);
         }
       });
     });
