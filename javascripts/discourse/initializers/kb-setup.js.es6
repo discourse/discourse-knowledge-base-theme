@@ -22,6 +22,7 @@ export default {
           const slug = transition.to.params.slug;
           if (
             !activeParams &&
+            kbCategories &&
             kbCategories.some(cat => cat.slug === slug) &&
             settings.default_to_kb_view &&
             (!transition.queryParams || transition.queryParams.kb !== "active")
@@ -43,6 +44,7 @@ export default {
           const kbCategories = Category.findByIds(categoryIds);
           const slug = transition.to.params.slug;
           if (
+            kbCategories &&
             kbCategories.some(cat => cat.slug === slug) &&
             settings.default_to_kb_view &&
             (!transition.queryParams || transition.queryParams.kb !== "active")
@@ -56,20 +58,23 @@ export default {
         }
       });
       api.onPageChange((url, title) => {
-        const categoryIds = settings.kb_categories.split("|");
-        const kbCategories = Category.findByIds(categoryIds);
-        const activeParams = kbParams({ filter: "kb" });
-        if (
-          kbCategories.some(
-            category =>
-              url.includes(category.slug) &&
-              url.match(new RegExp(`/c/[^&]*/*${category.slug}`))
-          ) &&
-          activeParams
-        ) {
-          document.body.classList.add("kb-active");
-        } else {
-          document.body.classList.remove("kb-active");
+        if (kbParams) {
+          const categoryIds = settings.kb_categories.split("|");
+          const kbCategories = Category.findByIds(categoryIds);
+          const activeParams = kbParams({ filter: "kb" });
+          if (
+            kbCategories &&
+            kbCategories.some(
+              category =>
+                url.includes(category.slug) &&
+                url.match(new RegExp(`/c/[^&]*/*${category.slug}`))
+            ) &&
+            activeParams
+          ) {
+            document.body.classList.add("kb-active");
+          } else {
+            document.body.classList.remove("kb-active");
+          }
         }
       });
       api.modifyClass("component:navigation-item", {
