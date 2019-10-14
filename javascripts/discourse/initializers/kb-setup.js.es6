@@ -68,6 +68,11 @@ export default {
         }
       });
       api.onPageChange((url, title) => {
+        const currentUser = api.container.lookup("current-user:main");
+        const siteSettings = api.container.lookup("site-settings:main");
+        if (url === "/login" && !currentUser && siteSettings.login_required) {
+          return;
+        }
         if (kbParams && Category) {
           const categoryIds = settings.kb_categories.split("|");
           const kbCategories = Category.findByIds(categoryIds);
