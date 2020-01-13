@@ -46,7 +46,9 @@ export default {
             const activeParams = kbParams({ filter: "kb" });
             const categoryIds = settings.kb_categories.split("|");
             const kbCategories = Category.findByIds(categoryIds);
-            const slug = transition.to.params.slug;
+            const slug = transition.to.params.category_slug_path_with_id.match(
+              /(\S*)\//
+            )[1];
             if (
               kbCategories &&
               kbCategories.some(cat => cat.slug === slug) &&
@@ -56,7 +58,34 @@ export default {
             ) {
               this.transitionTo(
                 "discovery.category",
-                transition.to.params.slug,
+                transition.to.params.category_slug_path_with_id,
+                {
+                  queryParams: { kb: "active" }
+                }
+              );
+            } else {
+              return this._super(...arguments);
+            }
+          }
+        }
+      });
+      api.modifyClass("route:discovery.categoryWithID", {
+        beforeModel(transition) {
+          if (kbParams && Category) {
+            const activeParams = kbParams({ filter: "kb" });
+            const categoryIds = settings.kb_categories.split("|");
+            const kbCategories = Category.findByIds(categoryIds);
+            const categoryID = transition.to.params.id;
+            if (
+              kbCategories &&
+              kbCategories.some(cat => cat.id === parseInt(categoryID)) &&
+              settings.default_to_kb_view &&
+              (!transition.queryParams ||
+                transition.queryParams.kb !== "active")
+            ) {
+              this.transitionTo(
+                "discovery.categoryWithID",
+                transition.to.params.id,
                 {
                   queryParams: { kb: "active" }
                 }
