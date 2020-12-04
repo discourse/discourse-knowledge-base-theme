@@ -93,7 +93,7 @@ export function kbParams(options) {
 export function hrefForTag(category, tagName) {
   let destinationURL = "";
   if (category && tagName) {
-    const slug = Discourse.Category.slugFor(category);
+    const slug = Category.slugFor(category);
     let tagsParam = kbParams({ filter: "tags" });
 
     if (tagsParam) {
@@ -125,7 +125,7 @@ export function hrefForTag(category, tagName) {
 export function hrefForCategory(category) {
   let destinationURL = "";
   if (category) {
-    const slug = Discourse.Category.slugFor(category);
+    const slug = Category.slugFor(category);
     let categoryParam = kbParams({ filter: "kb" });
 
     if (!categoryParam) {

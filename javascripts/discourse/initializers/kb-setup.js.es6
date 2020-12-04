@@ -16,11 +16,14 @@ export default {
       api.addDiscoveryQueryParam("kb", { replace: true, refreshModel: true });
       api.modifyClass("route:discovery.parentCategory", {
         beforeModel(transition) {
-          if (kbParams && Category) {
+          if (kbParams) {
             const activeParams = kbParams({ filter: "kb" });
-            const categoryIds = settings.kb_categories.split("|");
+            const categoryIds = settings.kb_categories
+              .split("|")
+              .filter(Boolean);
             const kbCategories = Category.findByIds(categoryIds);
             const slug = transition.to.params.slug;
+
             if (
               !activeParams &&
               kbCategories &&
@@ -44,7 +47,9 @@ export default {
         beforeModel(transition) {
           if (kbParams && Category) {
             const activeParams = kbParams({ filter: "kb" });
-            const categoryIds = settings.kb_categories.split("|");
+            const categoryIds = settings.kb_categories
+              .split("|")
+              .filter(Boolean);
             const kbCategories = Category.findByIds(categoryIds);
             const slug = transition.to.params.slug;
             if (
@@ -74,7 +79,7 @@ export default {
           return;
         }
         if (kbParams && Category) {
-          const categoryIds = settings.kb_categories.split("|");
+          const categoryIds = settings.kb_categories.split("|").filter(Boolean);
           const kbCategories = Category.findByIds(categoryIds);
           const activeParams = kbParams({ filter: "kb" });
           if (
