@@ -6,7 +6,7 @@
   "authors": "Justin DiRose",
   "theme_version": "0.1",
   "minimum_discourse_version": null,
-  "maximum_discourse_version": null,
+  "maximum_discourse_version": "2.6.0",
   "assets": {
   },
   "color_schemes": {
